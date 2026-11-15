@@ -23,20 +23,24 @@ use App\Http\Controllers\ReportsController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/login', [LoginController::class, 'showLoginForm'])
+// Login
+Route::get('/login', [LoginController::class, 'show'])
     ->name('login');
 
 Route::post('/login', [LoginController::class, 'login'])
     ->name('login.submit');
 
+// Signup
 Route::get('/signup', [SignupController::class, 'showSignupForm'])
     ->name('signup');
 
 Route::post('/signup', [SignupController::class, 'signup'])
     ->name('signup.store');
 
+// Logout
 Route::post('/logout', [LoginController::class, 'logout'])
     ->name('logout');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +52,7 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+
 /*
 |--------------------------------------------------------------------------
 | Dashboard Routes
@@ -56,6 +61,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +77,7 @@ Route::post('/profile/update', [ProfileController::class, 'update'])
 
 Route::post('/profile/password', [ProfileController::class, 'updatePassword'])
     ->name('profile.password');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -106,9 +113,11 @@ Route::delete('/debtors/{id}', [DebtorDetailController::class, 'destroy'])
 Route::delete(
     '/debtors/{id}/transactions/{transactionId}',
     [DebtorDetailController::class, 'destroyTransaction']
-)->whereNumber('id')
-  ->whereNumber('transactionId')
-  ->name('debtors.transactions.destroy');
+)
+    ->whereNumber('id')
+    ->whereNumber('transactionId')
+    ->name('debtors.transactions.destroy');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -124,6 +133,7 @@ Route::post('/debtors/{debtor}/add-credit', [AddCreditController::class, 'store'
     ->whereNumber('debtor')
     ->name('debtors.credit.store');
 
+
 /*
 |--------------------------------------------------------------------------
 | Debtor Payment Routes
@@ -137,6 +147,7 @@ Route::get('/debtors/{debtorId}/payments/create', [PaymentController::class, 'cr
 Route::post('/debtors/{debtorId}/payments', [PaymentController::class, 'store'])
     ->whereNumber('debtorId')
     ->name('debtors.payments.store');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -165,6 +176,7 @@ Route::delete('/inventory/{id}', [InventoryController::class, 'destroy'])
     ->whereNumber('id')
     ->name('inventory.destroy');
 
+
 /*
 |--------------------------------------------------------------------------
 | Inventory Compatibility Route
@@ -177,6 +189,7 @@ Route::get('/inventory/{id}', function ($id) {
     ->whereNumber('id')
     ->name('inventory.show');
 
+
 /*
 |--------------------------------------------------------------------------
 | Sell Products Routes
@@ -185,6 +198,7 @@ Route::get('/inventory/{id}', function ($id) {
 
 Route::get('/sell', [SellController::class, 'index'])
     ->name('sell.index');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -210,6 +224,7 @@ Route::delete('/sell/cart/remove/{id}', [SellCartController::class, 'remove'])
 Route::delete('/sell/cart/clear', [SellCartController::class, 'clear'])
     ->name('sell.cart.clear');
 
+
 /*
 |--------------------------------------------------------------------------
 | Checkout Routes
@@ -225,6 +240,7 @@ Route::post('/sell/checkout/complete', [CheckoutController::class, 'complete'])
 Route::get('/sell/receipt/{id}', [CheckoutController::class, 'receipt'])
     ->whereNumber('id')
     ->name('sell.receipt');
+
 
 /*
 |--------------------------------------------------------------------------

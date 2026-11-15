@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -8,7 +10,9 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
-    // Display login page
+    /**
+     * Display login page.
+     */
     public function show()
     {
         if (session()->has('user_id')) {
@@ -18,7 +22,9 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    // Process login
+    /**
+     * Process user login using phone number and PIN/password.
+     */
     public function login(Request $request)
     {
         $request->validate([
@@ -26,7 +32,7 @@ class LoginController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        // Find account using phone number
+        // Find account using phone number.
         $user = DB::table('users')
             ->where('phone_number', $request->phone_number)
             ->first();
@@ -39,7 +45,7 @@ class LoginController extends Controller
                 ->withInput($request->only('phone_number'));
         }
 
-        // Check hashed passwords, with support for older plain-text PINs
+        // Check hashed passwords and older plain-text PINs.
         $storedPassword = (string) $user->pin_code;
 
         $isHashed = str_starts_with($storedPassword, '$2y$')
@@ -57,9 +63,10 @@ class LoginController extends Controller
                 ->withInput($request->only('phone_number'));
         }
 
-        // Create login session
+        // Regenerate session after successful login.
         $request->session()->regenerate();
 
+        // Store logged-in user information.
         $request->session()->put([
             'user_id' => $user->id,
             'store_name' => $user->store_name,
@@ -67,11 +74,13 @@ class LoginController extends Controller
             'phone_number' => $user->phone_number,
         ]);
 
-        // Go to dashboard after successful login
+        // Redirect to dashboard.
         return redirect('/dashboard');
     }
 
-    // Logout
+    /**
+     * Logout user.
+     */
     public function logout(Request $request)
     {
         $request->session()->invalidate();
