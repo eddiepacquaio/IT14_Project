@@ -31,10 +31,12 @@ Route::post('/login', [LoginController::class, 'login'])
     ->name('login.submit');
 
 // Signup
-Route::get('/signup', [SignupController::class, 'showSignupForm'])
+// FIXED: Changed showSignupForm() to show()
+Route::get('/signup', [SignupController::class, 'show'])
     ->name('signup');
 
-Route::post('/signup', [SignupController::class, 'signup'])
+// FIXED: Changed signup() to register()
+Route::post('/signup', [SignupController::class, 'register'])
     ->name('signup.store');
 
 // Logout
