@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="trackandtally.sqlite" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3555"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="debtors" custom_title="0" dock_id="1" table="4,7:maindebtors"/><dock_state state="000000ff00000000fd00000001000000020000043c00000316fc0100000001fb000000160064006f0063006b00420072006f007700730065003101000000000000043c0000011800ffffff000002580000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">
+PRAGMA foreign_keys = ON;
+
+-- =========================================
+-- 1. USERS TABLE
+-- =========================================
+
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    phone_number TEXT NOT NULL UNIQUE,
+    pin_code TEXT NOT NULL,
+    store_name TEXT NOT NULL,
+    owner_name TEXT,
+    firebase_uid TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =========================================
+-- 2. DEBTORS TABLE
+-- =========================================
+
+CREATE TABLE IF NOT EXISTS debtors (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    full_name TEXT NOT NULL,
+    contact_number TEXT,
+    address TEXT,
+    notes TEXT,
+    credit_limit DECIMAL(12,2) DEFAULT 0,
+    profile_photo_uri TEXT,
+    id_photo_uri TEXT,
+    deleted_at DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+);
+
+-- =========================================
+-- 3. PRODUCTS TABLE
+-- =========================================
+
+CREATE TABLE IF NOT EXISTS products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    name TEXT NOT NULL,
+    category TEXT,
+    unit TEXT DEFAULT 'piece',
+    measurement_value DECIMAL(12,2),
+    unit_price DECIMAL(12,2) DEFAULT 0,
+    item_price DECIMAL(12,2),
+    stock_quantity INTEGER DEFAULT 0,
+    low_stock_threshold INTEGER DEFAULT 5,
+    cloud_id TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+);
+
+-- =========================================
+-- 4. TRANSACTIONS TABLE
+-- =========================================
+
+CREATE TABLE IF NOT EXISTS transactions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    debtor_id INTEGER NOT NULL,
+    type TEXT NOT NULL CHECK (type IN ('credit', 'payment')),
+    amount DECIMAL(12,2) NOT NULL,
+    description TEXT,
+    product_id INTEGER,
+    quantity INTEGER,
+    payment_method TEXT,
+    payment_provider TEXT,
+    payment_reference TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id),
+
+    FOREIGN KEY (debtor_id)
+        REFERENCES debtors(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (product_id)
+        REFERENCES products(id)
+        ON DELETE SET NULL
+);
+
+-- =========================================
+-- 5. SALES TABLE
+-- =========================================
+
+CREATE TABLE IF NOT EXISTS sales (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    debtor_id INTEGER,
+    sale_type TEXT NOT NULL CHECK (sale_type IN ('cash', 'credit')),
+    total_amount DECIMAL(12,2) DEFAULT 0,
+    customer_name TEXT,
+    payment_method TEXT DEFAULT 'cash',
+    payment_provider TEXT,
+    payment_reference TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id),
+
+    FOREIGN KEY (debtor_id)
+        REFERENCES debtors(id)
+        ON DELETE SET NULL
+);
+
+-- =========================================
+-- 6. SALE ITEMS TABLE
+-- =========================================
+
+CREATE TABLE IF NOT EXISTS sale_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sale_id INTEGER NOT NULL,
+    product_id INTEGER,
+    product_name TEXT NOT NULL,
+    unit_price DECIMAL(12,2) DEFAULT 0,
+    quantity INTEGER DEFAULT 1,
+
+    FOREIGN KEY (sale_id)
+        REFERENCES sales(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (product_id)
+        REFERENCES products(id)
+        ON DELETE SET NULL
+);
+
+-- =========================================
+-- 7. INDEXES
+-- =========================================
+
+CREATE INDEX IF NOT EXISTS idx_debtors_user_id
+ON debtors(user_id);
+
+CREATE INDEX IF NOT EXISTS idx_products_user_id
+ON products(user_id);
+
+CREATE INDEX IF NOT EXISTS idx_transactions_user_debtor
+ON transactions(user_id, debtor_id);
+
+CREATE INDEX IF NOT EXISTS idx_sales_user_debtor
+ON sales(user_id, debtor_id);
+
+CREATE INDEX IF NOT EXISTS idx_sale_items_product
+ON sale_items(product_id);
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
