@@ -46,9 +46,7 @@
             font: inherit;
         }
 
-        /* =========================================
-           SIDEBAR - MATCHING REFERENCE DESIGN
-        ========================================= */
+        /* SIDEBAR */
 
         .sidebar {
             position: fixed;
@@ -65,8 +63,6 @@
             transition: transform .25s ease;
         }
 
-        /* BRAND */
-
         .brand {
             display: flex;
             align-items: center;
@@ -75,12 +71,18 @@
             margin-bottom: 36px;
         }
 
+        /* WHITE LOGO COVER - MATCH APP */
+
         .brand img {
             width: 43px;
             height: 43px;
             object-fit: contain;
+            object-position: center;
+            background: #ffffff;
             border-radius: 10px;
+            padding: 3px;
             flex-shrink: 0;
+            display: block;
         }
 
         .brand-name {
@@ -95,8 +97,6 @@
             color: var(--gold);
         }
 
-        /* MENU LABEL */
-
         .menu-label {
             color: #8497b4;
             font-size: 10px;
@@ -105,8 +105,6 @@
             padding: 0 12px;
             margin-bottom: 13px;
         }
-
-        /* NAVIGATION */
 
         .nav-list {
             display: flex;
@@ -147,8 +145,6 @@
             color: var(--gold);
         }
 
-        /* ACTIVE MENU */
-
         .nav-link.active {
             color: white;
             background: #344966;
@@ -158,8 +154,6 @@
         .nav-link.active i {
             color: white;
         }
-
-        /* SIDEBAR BOTTOM */
 
         .sidebar-bottom {
             margin-top: auto;
@@ -199,8 +193,6 @@
             margin-top: 4px;
         }
 
-        /* LOGOUT BUTTON */
-
         .logout-form {
             padding: 0;
         }
@@ -230,9 +222,7 @@
             transform: translateY(-1px);
         }
 
-        /* =========================================
-           MAIN CONTENT
-        ========================================= */
+        /* MAIN CONTENT */
 
         .main {
             margin-left: 246px;
@@ -873,9 +863,7 @@
             z-index: 90;
         }
 
-        /* =========================================
-           RESPONSIVE DESIGN
-        ========================================= */
+        /* RESPONSIVE */
 
         @media(max-width: 1100px) {
             .main {
@@ -1011,9 +999,7 @@
 
 <div class="mobile-overlay" id="mobileOverlay" onclick="closeSidebar()"></div>
 
-<!-- =========================================
-     SIDEBAR
-========================================= -->
+<!-- SIDEBAR -->
 
 <aside class="sidebar" id="sidebar">
 
@@ -1065,13 +1051,8 @@
             </div>
 
             <div>
-                <div class="profile-name">
-                    {{ $ownerName }}
-                </div>
-
-                <div class="profile-store">
-                    {{ $storeName }}
-                </div>
+                <div class="profile-name">{{ $ownerName }}</div>
+                <div class="profile-store">{{ $storeName }}</div>
             </div>
 
         </div>
@@ -1089,9 +1070,7 @@
 
 </aside>
 
-<!-- =========================================
-     MAIN CONTENT
-========================================= -->
+<!-- MAIN CONTENT -->
 
 <main class="main">
 
@@ -1179,9 +1158,7 @@
 
     </nav>
 
-    <!-- =========================================
-         SALES TAB
-    ========================================= -->
+    <!-- SALES TAB -->
 
     @if($activeTab === 'sales')
 
@@ -1193,10 +1170,7 @@
 
             <div>
                 <h2>{{ $periodLabels[$salesPeriod] ?? 'Today' }} sales</h2>
-
-                <p>
-                    {{ $periodSubtitles[$salesPeriod] ?? 'Sales recorded today' }}
-                </p>
+                <p>{{ $periodSubtitles[$salesPeriod] ?? 'Sales recorded today' }}</p>
             </div>
 
         </div>
@@ -1205,7 +1179,6 @@
 
             <div>
                 <div class="period-title">Sales period</div>
-
                 <div class="period-description">
                     Choose how you want to view your sales.
                 </div>
@@ -1226,69 +1199,49 @@
 
         </section>
 
-        <!-- SALES METRICS -->
-
         <div class="metrics">
 
             <div class="metric-card">
-
                 <div class="metric-icon">
                     <i class="fa-solid fa-money-bill-wave"></i>
                 </div>
-
                 <div class="metric-label">CASH SALES</div>
-
                 <div class="metric-value">
                     {{ $money($selectedCash) }}
                 </div>
-
             </div>
 
             <div class="metric-card">
-
                 <div class="metric-icon red">
                     <i class="fa-solid fa-wallet"></i>
                 </div>
-
                 <div class="metric-label">UTANG SALES</div>
-
                 <div class="metric-value red">
                     {{ $money($selectedCredit) }}
                 </div>
-
             </div>
 
             <div class="metric-card">
-
                 <div class="metric-icon green">
                     <i class="fa-solid fa-arrow-trend-up"></i>
                 </div>
-
                 <div class="metric-label">GRAND TOTAL</div>
-
                 <div class="metric-value green">
                     {{ $money($selectedGrandTotal) }}
                 </div>
-
             </div>
 
             <div class="metric-card">
-
                 <div class="metric-icon">
                     <i class="fa-solid fa-cubes"></i>
                 </div>
-
                 <div class="metric-label">ITEMS SOLD</div>
-
                 <div class="metric-value">
                     {{ number_format($selectedItemsSold) }}
                 </div>
-
             </div>
 
         </div>
-
-        <!-- SALES BREAKDOWN -->
 
         <div class="section-heading">
 
@@ -1309,9 +1262,7 @@
 
                 <div class="empty-state">
                     <i class="fa-solid fa-chart-simple"></i>
-
                     <h3>No sales recorded yet</h3>
-
                     <p>Your sales activity will appear here.</p>
                 </div>
 
@@ -1336,7 +1287,6 @@
                             @foreach($summary as $row)
 
                                 <tr>
-
                                     <td class="date-cell">
                                         {{ $formatDate($row->date) }}
                                     </td>
@@ -1356,7 +1306,6 @@
                                     <td class="amount">
                                         {{ $money($row->cash_total + $row->credit_total) }}
                                     </td>
-
                                 </tr>
 
                             @endforeach
@@ -1373,9 +1322,7 @@
 
     @endif
 
-    <!-- =========================================
-         UNPAID TAB
-    ========================================= -->
+    <!-- UNPAID TAB -->
 
     @if($activeTab === 'unpaid')
 
@@ -1399,10 +1346,7 @@
             </div>
 
             <div>
-
-                <div class="outstanding-label">
-                    TOTAL OUTSTANDING
-                </div>
+                <div class="outstanding-label">TOTAL OUTSTANDING</div>
 
                 <div class="outstanding-value">
                     {{ $money($totalUnpaid) }}
@@ -1413,7 +1357,6 @@
                     {{ $unpaid->count() === 1 ? 'debtor has' : 'debtors have' }}
                     an outstanding balance
                 </div>
-
             </div>
 
         </div>
@@ -1436,13 +1379,9 @@
             @if($unpaid->isEmpty())
 
                 <div class="empty-state">
-
                     <i class="fa-solid fa-circle-check"></i>
-
                     <h3>Everyone is settled up</h3>
-
                     <p>There are no outstanding debtor balances.</p>
-
                 </div>
 
             @else
@@ -1465,7 +1404,6 @@
                             @foreach($unpaid as $debtor)
 
                                 <tr>
-
                                     <td class="date-cell">
                                         {{ $debtor->full_name }}
                                     </td>
@@ -1485,7 +1423,6 @@
                                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                         </a>
                                     </td>
-
                                 </tr>
 
                             @endforeach
@@ -1502,9 +1439,7 @@
 
     @endif
 
-    <!-- =========================================
-         HISTORY TAB
-    ========================================= -->
+    <!-- HISTORY TAB -->
 
     @if($activeTab === 'history')
 
@@ -1521,15 +1456,11 @@
 
         </div>
 
-        <!-- HISTORY FILTERS -->
-
         <div class="filters">
 
             <div class="filter-group">
 
-                <label for="typeFilter">
-                    TRANSACTION TYPE
-                </label>
+                <label for="typeFilter">TRANSACTION TYPE</label>
 
                 <select id="typeFilter" onchange="applyHistoryFilters()">
 
@@ -1559,9 +1490,7 @@
 
             <div class="filter-group">
 
-                <label for="dateFilter">
-                    DATE
-                </label>
+                <label for="dateFilter">DATE</label>
 
                 <select id="dateFilter" onchange="applyHistoryFilters()">
 
@@ -1582,8 +1511,6 @@
             </div>
 
         </div>
-
-        <!-- HISTORY TABLE -->
 
         <section class="panel">
 
@@ -1667,36 +1594,26 @@
 
                                         @if($entry->label === 'E-wallet Sale')
 
-                                            <span class="badge wallet">
-                                                E-WALLET
-                                            </span>
+                                            <span class="badge wallet">E-WALLET</span>
 
                                         @elseif($entry->type === 'payment')
 
-                                            <span class="badge payment">
-                                                PAYMENT
-                                            </span>
+                                            <span class="badge payment">PAYMENT</span>
 
                                         @elseif($entry->type === 'credit')
 
-                                            <span class="badge credit">
-                                                UTANG
-                                            </span>
+                                            <span class="badge credit">UTANG</span>
 
                                         @else
 
-                                            <span class="badge cash">
-                                                CASH SALE
-                                            </span>
+                                            <span class="badge cash">CASH SALE</span>
 
                                         @endif
 
                                     </td>
 
                                     <td class="amount {{ $entry->type === 'payment' ? 'green' : '' }}">
-
                                         {{ $entry->type === 'payment' ? '−' : '+' }}{{ $money($entry->amount) }}
-
                                     </td>
 
                                     <td>
@@ -1715,9 +1632,7 @@
                                             <button class="btn btn-danger btn-small"
                                                     type="submit"
                                                     title="Delete record">
-
                                                 <i class="fa-regular fa-trash-can"></i>
-
                                             </button>
 
                                         </form>
@@ -1740,9 +1655,7 @@
 
     @endif
 
-    <!-- =========================================
-         PRINT TAB
-    ========================================= -->
+    <!-- PRINT TAB -->
 
     @if($activeTab === 'backup')
 
@@ -1759,8 +1672,6 @@
 
         </div>
 
-        <!-- PRINT INTRO -->
-
         <section class="report-intro">
 
             <div class="report-intro-icon">
@@ -1768,7 +1679,6 @@
             </div>
 
             <div>
-
                 <h3>Print or save reports</h3>
 
                 <p>
@@ -1776,12 +1686,9 @@
                     unpaid customer balances, transaction history, and inventory
                     products that need attention.
                 </p>
-
             </div>
 
         </section>
-
-        <!-- PRINT SETTINGS -->
 
         <section class="panel">
 
@@ -1805,15 +1712,11 @@
 
                     <div class="filter-group">
 
-                        <label for="printDate">
-                            HISTORY RECORDS TO PRINT
-                        </label>
+                        <label for="printDate">HISTORY RECORDS TO PRINT</label>
 
                         <select id="printDate">
 
-                            <option value="all">
-                                All dates
-                            </option>
+                            <option value="all">All dates</option>
 
                             @foreach($historyDates as $date)
 
@@ -1830,10 +1733,8 @@
                     <button type="button"
                             class="btn btn-primary"
                             onclick="printReport()">
-
                         <i class="fa-solid fa-print"></i>
                         Print Reports
-
                     </button>
 
                 </div>
@@ -1842,77 +1743,49 @@
 
         </section>
 
-        <!-- TODAY METRICS -->
-
         <div class="metrics">
 
             <div class="metric-card">
-
                 <div class="metric-icon">
                     <i class="fa-solid fa-money-bill-wave"></i>
                 </div>
-
-                <div class="metric-label">
-                    TODAY CASH SALES
-                </div>
-
+                <div class="metric-label">TODAY CASH SALES</div>
                 <div class="metric-value">
                     {{ $money($todayCash) }}
                 </div>
-
             </div>
 
             <div class="metric-card">
-
                 <div class="metric-icon red">
                     <i class="fa-solid fa-wallet"></i>
                 </div>
-
-                <div class="metric-label">
-                    TODAY UTANG SALES
-                </div>
-
+                <div class="metric-label">TODAY UTANG SALES</div>
                 <div class="metric-value red">
                     {{ $money($todayCredit) }}
                 </div>
-
             </div>
 
             <div class="metric-card">
-
                 <div class="metric-icon green">
                     <i class="fa-solid fa-chart-line"></i>
                 </div>
-
-                <div class="metric-label">
-                    TODAY TOTAL SALES
-                </div>
-
+                <div class="metric-label">TODAY TOTAL SALES</div>
                 <div class="metric-value green">
                     {{ $money($todayGrandTotal) }}
                 </div>
-
             </div>
 
             <div class="metric-card">
-
                 <div class="metric-icon">
                     <i class="fa-solid fa-cubes"></i>
                 </div>
-
-                <div class="metric-label">
-                    TODAY ITEMS SOLD
-                </div>
-
+                <div class="metric-label">TODAY ITEMS SOLD</div>
                 <div class="metric-value">
                     {{ number_format($todayItemsSold) }}
                 </div>
-
             </div>
 
         </div>
-
-        <!-- INVENTORY WATCH -->
 
         <section class="panel">
 
@@ -1936,7 +1809,6 @@
                     <i class="fa-solid fa-circle-check" style="color:var(--green)"></i>
 
                     <h3>Stock levels look healthy</h3>
-
                     <p>No low-stock products need attention right now.</p>
 
                 </div>
@@ -2006,27 +1878,19 @@
 
 </main>
 
-<!-- =========================================
-     JAVASCRIPT
-========================================= -->
+<!-- JAVASCRIPT -->
 
 <script>
-
-    /* OPEN MOBILE SIDEBAR */
 
     function openSidebar() {
         document.getElementById('sidebar').classList.add('open');
         document.getElementById('mobileOverlay').classList.add('show');
     }
 
-    /* CLOSE MOBILE SIDEBAR */
-
     function closeSidebar() {
         document.getElementById('sidebar').classList.remove('open');
         document.getElementById('mobileOverlay').classList.remove('show');
     }
-
-    /* HISTORY FILTERS */
 
     function applyHistoryFilters() {
 
@@ -2041,8 +1905,6 @@
 
         window.location.href = url.toString();
     }
-
-    /* PRINT REPORT */
 
     function printReport() {
 
