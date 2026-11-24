@@ -1299,24 +1299,9 @@
     <main class="main">
 
         <!-- TOPBAR -->
-        <header class="topbar">
+            <header class="topbar">
 
-            <div style="display:flex; align-items:center; gap:13px;">
-
-                <button class="mobile-menu-button"
-                        type="button"
-                        onclick="toggleSidebar()"
-                        aria-label="Open menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-
-                <div class="page-heading">
-                    <h1>Inventory</h1>
-                    <p>Manage your products, stock levels, and product prices.</p>
-                </div>
-
-            </div>
-
+ 
             <div class="topbar-right">
 
                 <div class="date-display">
@@ -1324,12 +1309,20 @@
                     {{ now()->format('F d, Y') }}
                 </div>
 
+                <!-- SCAN SUPPLIER RECEIPT BUTTON -->
+                <a href="{{ route('receipt.index') }}" class="btn btn-dark">
+                    <i class="fas fa-receipt"></i>
+                    Scan Receipt
+                </a>
+
+                <!-- ADD PRODUCT BUTTON -->
                 <a href="{{ route('inventory.create') }}" class="btn btn-primary">
                     <i class="fas fa-plus"></i>
                     Add Product
                 </a>
 
             </div>
+
 
         </header>
 

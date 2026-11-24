@@ -263,3 +263,13 @@ Route::delete('/reports/history/{source}/{id}', [ReportsController::class, 'dele
     ->whereIn('source', ['sale', 'transaction'])
     ->whereNumber('id')
     ->name('reports.history.delete');
+use App\Http\Controllers\ReceiptScannerController;
+
+Route::get('/receipt-scanner', [ReceiptScannerController::class, 'index'])
+    ->name('receipt.index');
+
+Route::post('/receipt-scanner/scan', [ReceiptScannerController::class, 'scan'])
+    ->name('receipt.scan');
+
+Route::post('/receipt-scanner/import', [ReceiptScannerController::class, 'import'])
+    ->name('receipt.import');
